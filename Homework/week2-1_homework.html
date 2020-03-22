@@ -27,8 +27,9 @@
             let count = $('#order_count').val();
             let address = $('#order_address').val();
             let phone = $('#order_phone').val();
-            let request = S('#order_request').val();
+            let request = $('#order_request').val();
 
+            console.log(name)
             if (name == '') {
                 alert('성함을 입력해주세요')
                 $('#order_name').focus()
@@ -48,7 +49,7 @@
             } else if (!isCellPhone(phone)) {
                 alert('휴대폰번호 입력 형식이 틀립니다. \n 010-0000-0000으로 입력해주세요')
                 return
-            } else if (!request == '') {
+            } else if (request == '') {
                 alert('요청사항이 없으신가요?')
                 $('#order_request').focus()
                 return
@@ -57,7 +58,7 @@
             $.ajax({
                 type: "POST",
                 url: "/order",
-                data: { name_give: name, count_give: count, address_give: address, phone_give: phone, request_give: },
+                data: { name_give: name, count_give: count, address_give: address, phone_give: phone, request_give: request},
                 success: function (response) {
                     if (response['result'] == 'success') {
                         alert('주문 완료!');
@@ -89,9 +90,11 @@
                     }
                 }
             })
+            make_card(name, count, address, phone, request);
         }
 
         function make_card(name, count, address, phone, request) {
+
             let temp_html = '<tr>\
               <td>'+ name + '</td>\
               <td>'+ count + '</td>\
@@ -100,6 +103,8 @@
               <td>'+ request + '</td>\
             </tr>';
             $('#orders-box').append(temp_html);
+
+            clear()
         }
 
     </script>
